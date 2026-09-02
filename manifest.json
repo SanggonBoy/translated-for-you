@@ -3,7 +3,7 @@
   "name": "Translated For You",
   "version": "1.0.0",
   "description": "Translate text anywhere with a customizable keyboard shortcut (default Ctrl+Shift+T). Select text or type in any field, press the shortcut, and it gets replaced with the translation.",
-  "permissions": ["storage", "commands", "clipboardRead"],
+  "permissions": ["storage", "commands"],
   "host_permissions": ["https://translate.googleapis.com/*"],
   "background": {
     "service_worker": "background.js"
@@ -16,6 +16,7 @@
     }
   ],
   "action": {
+    "default_title": "Translated For You",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -31,7 +32,7 @@
   "commands": {
     "translate-selection": {
       "suggested_key": {
-        "default": "Ctrl+Shift+T",
+        "default": "Alt+Shift+T",
         "mac": "MacCtrl+Shift+T"
       },
       "description": "Translate selected text or input field content"
