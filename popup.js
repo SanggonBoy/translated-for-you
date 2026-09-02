@@ -1,4 +1,4 @@
-// Quick Translate - popup settings
+// Translated For You - popup settings
 
 const defaults = {
   targetLang: 'en',

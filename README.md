@@ -1,4 +1,4 @@
-# Quick Translate
+# Translated For You
 
 Browser extension (Chrome MV3) untuk translate text langsung di tempat — WhatsApp Web, Telegram Web, Discord, atau field manapun. Tekan shortcut, teks langsung diganti terjemahannya. No copy-paste, no tab switching.
 
@@ -10,7 +10,7 @@ Browser extension (Chrome MV3) untuk translate text langsung di tempat — Whats
 
 ## Customize Shortcut
 
-`chrome://extensions/shortcuts` → Quick Translate → set sesuka hati.
+`chrome://extensions/shortcuts` → Translated For You → set sesuka hati.
 
 ## Fitur
 

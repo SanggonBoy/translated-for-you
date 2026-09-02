@@ -1,4 +1,4 @@
-// Quick Translate - content script
+// Translated For You - content script
 // Receives EXECUTE_TRANSLATE from background (chrome.commands), translates
 // the selection or active input, and replaces it in-place.
 

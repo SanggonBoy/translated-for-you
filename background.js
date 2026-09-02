@@ -1,4 +1,4 @@
-// Quick Translate - background service worker
+// Translated For You - background service worker
 // Handles translation requests from content scripts and popup.
 
 // Translation via Google Translate free endpoint (translate.googleapis.com, no API key).

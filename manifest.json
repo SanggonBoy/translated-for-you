@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Quick Translate",
+  "name": "Translated For You",
   "version": "1.0.0",
   "description": "Translate text anywhere with a customizable keyboard shortcut (default Ctrl+Shift+T). Select text or type in any field, press the shortcut, and it gets replaced with the translation.",
   "permissions": ["storage", "commands", "clipboardRead"],
