@@ -11,3 +11,6 @@ Desktop.ini
 # Build artifacts (none expected — plain MV3)
 *.zip
 dist/
+
+# Hermes / tooling scratch artifacts
+.hermes-tmp*/
