@@ -1,0 +1,13 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Build artifacts (none expected — plain MV3)
+*.zip
+dist/
