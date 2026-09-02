@@ -71,7 +71,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 const DEFAULT_SETTINGS = {
   targetLang: 'en',
   sourceLang: 'auto',
-  shortcutKey: 'Ctrl+Shift+T',
 };
 
 chrome.runtime.onInstalled.addListener(() => {
