@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>TFY editor test</title></head>
+<body>
+  <h3>React controlled textarea</h3>
+  <div id="root"></div>
+
+  <h3>Fake-Slate contenteditable (model + beforeinput, like Discord)</h3>
+  <div id="slate" contenteditable="true" style="border:1px solid #999;min-height:30px"></div>
+  <div id="slate-state"></div>
+
+  <h3>Plain contenteditable (no framework)</h3>
+  <div id="plain" contenteditable="true" style="border:1px solid #999;min-height:30px">tolong terjemahkan ini</div>
+
+  <script>
+    // ---- fake Slate: model-backed editor driven by beforeinput ----------
+    var slateEl = document.getElementById('slate');
+    var slateModel = 'halo ini pesan discord';
+    function renderSlate() { slateEl.innerText = slateModel; }
+    function slateSetState(t) {
+      slateModel = t;
+      renderSlate();
+      document.getElementById('slate-state').textContent = 'MODEL:' + t;
+    }
+    function slateCaretOffsets() {
+      var sel = window.getSelection();
+      if (!sel.rangeCount) return { start: slateModel.length, end: slateModel.length };
+      var r = sel.getRangeAt(0);
+      var pre = document.createRange();
+      pre.selectNodeContents(slateEl);
+      pre.setEnd(r.startContainer, r.startOffset);
+      var start = pre.toString().length;
+      if (r.collapsed) return { start: start, end: start };
+      var pre2 = document.createRange();
+      pre2.selectNodeContents(slateEl);
+      pre2.setEnd(r.endContainer, r.endOffset);
+      return { start: start, end: pre2.toString().length };
+    }
+    function slateSetCaret(off) {
+      var walker = document.createTreeWalker(slateEl, NodeFilter.SHOW_TEXT);
+      var cur = 0, n;
+      while ((n = walker.nextNode())) {
+        var len = n.textContent.length;
+        if (cur + len >= off) {
+          var r = document.createRange();
+          r.setStart(n, off - cur);
+          r.collapse(true);
+          var s = window.getSelection();
+          s.removeAllRanges(); s.addRange(r);
+          return;
+        }
+        cur += len;
+      }
+      var r2 = document.createRange();
+      r2.selectNodeContents(slateEl); r2.collapse(false);
+      var s2 = window.getSelection(); s2.removeAllRanges(); s2.addRange(r2);
+    }
+    slateEl.addEventListener('beforeinput', function (ev) {
+      if (window.slateBypass) return;
+      ev.preventDefault(); // the model owns the edit, like real Slate
+      var pos = slateCaretOffsets();
+      if (ev.inputType === 'insertText' && ev.data != null) {
+        slateSetState(slateModel.slice(0, pos.start) + ev.data + slateModel.slice(pos.end));
+        setTimeout(function () { slateSetCaret(pos.start + ev.data.length); }, 0);
+      } else if (ev.inputType === 'deleteContentBackward') {
+        var a = pos.end > pos.start ? pos.start : Math.max(0, pos.start - 1);
+        slateSetState(slateModel.slice(0, a) + slateModel.slice(pos.end));
+        setTimeout(function () { slateSetCaret(a); }, 0);
+      }
+    });
+    slateSetState(slateModel);
+    window.slateModelText = function () { return slateModel; };
+  </script>
+
+  <script>window.reactReady = false;</script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script>
+    var e = React.createElement;
+    function App() {
+      var st = React.useState('halo bro apa kabar hari ini?');
+      var v = st[0], setV = st[1];
+      return e('div', null,
+        e('textarea', { id: 'rt', value: v,
+          onChange: function (ev) { setV(ev.target.value); }, rows: 4, cols: 50 }),
+        e('div', { id: 'rt-state' }, 'STATE:' + v));
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+    window.reactReady = true;
+  </script>
+</body>
+</html>

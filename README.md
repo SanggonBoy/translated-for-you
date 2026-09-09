@@ -1,12 +1,12 @@
 # Translated For You
 
-Browser extension (Chrome MV3) untuk translate text langsung di tempat — WhatsApp Web, Telegram Web, Discord, atau field manapun. Tekan shortcut, teks langsung diganti terjemahannya. No copy-paste, no tab switching.
+Chrome extension (MV3) untuk translate text langsung di tempat — WhatsApp Web, Telegram Web, Discord, atau field manapun. Shortcut → teks langsung diganti terjemahannya. No copy-paste, no tab switching.
 
 ## Install
 
 1. `chrome://extensions` → aktifkan **Developer mode**
 2. **Load unpacked** → pilih folder ini
-3. Tekan `Ctrl+Shift+T` di input field / seleksi text untuk translate
+3. Tekan `Ctrl+Shift+Y` di input field / seleksi text untuk translate
 
 ## Customize Shortcut
 
@@ -15,20 +15,24 @@ Browser extension (Chrome MV3) untuk translate text langsung di tempat — Whats
 ## Fitur
 
 - **Universal** — jalan di semua halaman web, input field & seleksi text
+- **Editor-adaptive** — bekerja tanpa konfigurasi per-site:
+  - `<input>` / `<textarea>` → sync via native setter + input event (kompatibel React/Vue/Angular)
+  - Rich contenteditable (Slate, Lexical, ProseMirror, Quill 2) → synthetic `beforeinput` InputEvent
+  - Plain contenteditable → execCommand fallback
 - **Auto-detect** bahasa sumber (Google Translate free endpoint, no API key)
 - **Auto-flip** — teks sudah dalam bahasa target? Otomatis dibalik arahnya
-- **Direct replace** via `execCommand('insertText')` — kompatibel React/WhatsApp Web
-- **Clipboard fallback** kalau direct replace gagal
+- **Toast feedback** — konfirmasi visual hasil translate
+- **On-demand injection** — content script di-inject otomatis ke tab yang sudah terbuka sebelum extension di-install/reload
 - **Settings popup**: source/target language, auto-flip toggle
 
 ## Cara Kerja
 
 ```
-Ctrl+Shift+T (chrome.commands)
+Ctrl+Shift+Y (chrome.commands)
   → background.js: route ke content script di tab aktif
     → content.js: ambil seleksi/input aktif
       → background.js: POST ke translate.googleapis.com/translate_a/single
-        → content.js: replace in-place + toast feedback
+        → content.js: replace in-place via editor-adaptive engine + toast
 ```
 
 ## License

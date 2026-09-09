@@ -45,7 +45,14 @@ chrome.commands.onCommand.addListener(async (command) => {
   try {
     await chrome.tabs.sendMessage(tab.id, { type: 'EXECUTE_TRANSLATE' });
   } catch {
-    // content script not injected yet (e.g. chrome:// pages)
+    // content script not in this tab yet (tab opened before install/reload)
+    // → inject on demand and retry, instead of failing silently
+    try {
+      await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
+      await chrome.tabs.sendMessage(tab.id, { type: 'EXECUTE_TRANSLATE' });
+    } catch {
+      // chrome:// pages, Chrome Web Store, etc. — no page to translate in
+    }
   }
 });
 
